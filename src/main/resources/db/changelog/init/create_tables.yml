@@ -1,0 +1,107 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: unitmanager
+      changes:
+        - createTable:
+            tableName: units
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: number_of_rooms
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: accommodation_type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: floor
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: base_cost
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_cost
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 2
+      author: unitmanager
+      changes:
+        - createTable:
+            tableName: bookings
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: unit_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_booking_unit
+                    references: units(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_price
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: payment_deadline
+                  type: timestamp
+                  constraints:
+                    nullable: true

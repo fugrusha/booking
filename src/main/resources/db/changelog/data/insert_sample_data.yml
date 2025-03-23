@@ -1,0 +1,188 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: unitmanager
+      changes:
+        # Insert 5 users
+        - insert:
+            tableName: app_users
+            columns:
+              - column:
+                  name: username
+                  value: "user1"
+              - column:
+                  name: email
+                  value: "user1@example.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$dXG" # password: password
+              - column:
+                  name: first_name
+                  value: "John"
+              - column:
+                  name: last_name
+                  value: "Doe"
+              - column:
+                  name: created_at
+                  valueDate: "now()"
+        - insert:
+            tableName: app_users
+            columns:
+              - column:
+                  name: username
+                  value: "user2"
+              - column:
+                  name: email
+                  value: "user2@example.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$dXJ3"
+              - column:
+                  name: first_name
+                  value: "Jane"
+              - column:
+                  name: last_name
+                  value: "Smith"
+              - column:
+                  name: created_at
+                  valueDate: "now()"
+        - insert:
+            tableName: app_users
+            columns:
+              - column:
+                  name: username
+                  value: "user3"
+              - column:
+                  name: email
+                  value: "user3@example.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$dXJ3"
+              - column:
+                  name: first_name
+                  value: "Robert"
+              - column:
+                  name: last_name
+                  value: "Johnson"
+              - column:
+                  name: created_at
+                  valueDate: "now()"
+        - insert:
+            tableName: app_users
+            columns:
+              - column:
+                  name: username
+                  value: "user4"
+              - column:
+                  name: email
+                  value: "user4@example.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$dXJ3"
+              - column:
+                  name: first_name
+                  value: "Emily"
+              - column:
+                  name: last_name
+                  value: "Davis"
+              - column:
+                  name: created_at
+                  valueDate: "now()"
+        - insert:
+            tableName: app_users
+            columns:
+              - column:
+                  name: username
+                  value: "user5"
+              - column:
+                  name: email
+                  value: "user5@example.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$dXJ3"
+              - column:
+                  name: first_name
+                  value: "Michael"
+              - column:
+                  name: last_name
+                  value: "Wilson"
+              - column:
+                  name: created_at
+                  valueDate: "now()"
+
+  - changeSet:
+      id: 2
+      author: unitmanager
+      changes:
+        # Insert 100 units
+        - sql:
+            sql: |
+              -- Insert 25 HOTEL units
+              INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
+              SELECT 
+                FLOOR(RANDOM() * 3) + 1 AS number_of_rooms,
+                'HOTEL' AS accommodation_type,
+                FLOOR(RANDOM() * 10) + 1 AS floor,
+                (RANDOM() * 100 + 50)::DECIMAL(10,2) AS base_cost,
+                (RANDOM() * 150 + 80)::DECIMAL(10,2) AS total_cost,
+                'Hotel room with ' || (FLOOR(RANDOM() * 3) + 1)::TEXT || ' beds, free Wi-Fi, and a minibar.'
+              FROM generate_series(1, 25);
+              
+              -- Insert 25 APARTMENTS units
+              INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
+              SELECT 
+                FLOOR(RANDOM() * 4) + 2 AS number_of_rooms,
+                'APARTMENTS' AS accommodation_type,
+                FLOOR(RANDOM() * 20) + 1 AS floor,
+                (RANDOM() * 150 + 100)::DECIMAL(10,2) AS base_cost,
+                (RANDOM() * 200 + 150)::DECIMAL(10,2) AS total_cost,
+                'Spacious apartment with ' || (FLOOR(RANDOM() * 4) + 2)::TEXT || ' rooms, fully equipped kitchen, and a balcony.'
+              FROM generate_series(1, 25);
+              
+              -- Insert 25 HOME units
+              INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
+              SELECT 
+                1 AS number_of_rooms,
+                'HOME' AS accommodation_type,
+                FLOOR(RANDOM() * 5) + 1 AS floor,
+                (RANDOM() * 30 + 20)::DECIMAL(10,2) AS base_cost,
+                (RANDOM() * 50 + 30)::DECIMAL(10,2) AS total_cost,
+                'Hostel bed in a shared room with ' || (FLOOR(RANDOM() * 7) + 4)::TEXT || ' beds, shared bathroom, and a locker.'
+              FROM generate_series(1, 25);
+              
+              -- Insert 25 VILLA units
+              INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
+              SELECT 
+                FLOOR(RANDOM() * 6) + 4 AS number_of_rooms,
+                'FLAT' AS accommodation_type,
+                FLOOR(RANDOM() * 3) + 1 AS floor,
+                (RANDOM() * 300 + 200)::DECIMAL(10,2) AS base_cost,
+                (RANDOM() * 500 + 300)::DECIMAL(10,2) AS total_cost,
+                'Luxury villa with ' || (FLOOR(RANDOM() * 6) + 4)::TEXT || ' rooms, private pool, garden, and a terrace.'
+              FROM generate_series(1, 25);
+
+  - changeSet:
+      id: 3
+      author: unitmanager
+      changes:
+        # Insert 25 bookings
+        - sql:
+            sql: |
+              -- Insert 25 bookings with different statuses
+              INSERT INTO bookings (unit_id, user_id, start_date, end_date, total_price, status, created_at, payment_deadline)
+              SELECT 
+                FLOOR(RANDOM() * 100) + 1 AS unit_id,
+                FLOOR(RANDOM() * 5) + 1 AS user_id,
+                (CURRENT_DATE + (FLOOR(RANDOM() * 30) + 1)::INTEGER)::TIMESTAMP AS start_date,
+                (CURRENT_DATE + (FLOOR(RANDOM() * 30) + 8)::INTEGER)::TIMESTAMP AS end_date,
+                (RANDOM() * 1000 + 100)::DECIMAL(10,2) AS total_price,
+                CASE 
+                  WHEN i % 5 = 0 THEN 'PENDING'
+                  WHEN i % 5 = 1 THEN 'CONFIRMED'
+                  WHEN i % 5 = 2 THEN 'PAID'
+                  WHEN i % 5 = 3 THEN 'CANCELLED'
+                  ELSE 'EXPIRED'
+                END AS status,
+                (CURRENT_DATE - (FLOOR(RANDOM() * 10))::INTEGER)::TIMESTAMP AS created_at,
+                (CURRENT_DATE + (FLOOR(RANDOM() * 5))::INTEGER)::TIMESTAMP AS payment_deadline
+              FROM generate_series(1, 25) i;
