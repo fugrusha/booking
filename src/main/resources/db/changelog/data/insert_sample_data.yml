@@ -117,18 +117,7 @@ databaseChangeLog:
         # Insert 100 units
         - sql:
             sql: |
-              -- Insert 25 HOTEL units
-              INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
-              SELECT 
-                FLOOR(RANDOM() * 3) + 1 AS number_of_rooms,
-                'HOTEL' AS accommodation_type,
-                FLOOR(RANDOM() * 10) + 1 AS floor,
-                (RANDOM() * 100 + 50)::DECIMAL(10,2) AS base_cost,
-                (RANDOM() * 150 + 80)::DECIMAL(10,2) AS total_cost,
-                'Hotel room with ' || (FLOOR(RANDOM() * 3) + 1)::TEXT || ' beds, free Wi-Fi, and a minibar.'
-              FROM generate_series(1, 25);
-              
-              -- Insert 25 APARTMENTS units
+              -- Insert 50 APARTMENTS units
               INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
               SELECT 
                 FLOOR(RANDOM() * 4) + 2 AS number_of_rooms,
@@ -137,7 +126,7 @@ databaseChangeLog:
                 (RANDOM() * 150 + 100)::DECIMAL(10,2) AS base_cost,
                 (RANDOM() * 200 + 150)::DECIMAL(10,2) AS total_cost,
                 'Spacious apartment with ' || (FLOOR(RANDOM() * 4) + 2)::TEXT || ' rooms, fully equipped kitchen, and a balcony.'
-              FROM generate_series(1, 25);
+              FROM generate_series(1, 50);
               
               -- Insert 25 HOME units
               INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
@@ -150,7 +139,7 @@ databaseChangeLog:
                 'Hostel bed in a shared room with ' || (FLOOR(RANDOM() * 7) + 4)::TEXT || ' beds, shared bathroom, and a locker.'
               FROM generate_series(1, 25);
               
-              -- Insert 25 VILLA units
+              -- Insert 25 FLAT units
               INSERT INTO units (number_of_rooms, accommodation_type, floor, base_cost, total_cost, description)
               SELECT 
                 FLOOR(RANDOM() * 6) + 4 AS number_of_rooms,
